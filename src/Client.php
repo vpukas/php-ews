@@ -5,7 +5,7 @@
 
 namespace jamesiarmes\PhpEws;
 
-use \jamesiarmes\PhpNtlm\SoapClient;
+use \jamesiarmes\PhpEws\OAuth\SoapClient;
 
 /**
  * Base class of the Exchange Web Services application.
@@ -112,7 +112,7 @@ class Client
     /**
      * SOAP client used to make the request.
      *
-     * @var null|\jamesiarmes\PhpNtlm\SoapClient
+     * @var null|\jamesiarmes\PhpEws\OAuth\SoapClient
      */
     protected $soap;
 
@@ -152,6 +152,10 @@ class Client
      */
     protected $version;
 
+
+    protected $token;
+
+    
     /**
      * Constructor for the ExchangeWebServices class
      *
@@ -163,21 +167,19 @@ class Client
      */
     public function __construct(
         $server = null,
-        $username = null,
-        $password = null,
+        $token = null,
         $version = self::VERSION_2013
     ) {
         // Set the object properties.
+        $this->setToken($token);
         $this->setServer($server);
-        $this->setUsername($username);
-        $this->setPassword($password);
         $this->setVersion($version);
     }
 
     /**
      * Returns the SOAP Client that may be used to make calls against the server
      *
-     * @return \jamesiarmes\PhpNtlm\SoapClient
+     * @return \jamesiarmes\PhpEws\OAuth\SoapClient
      */
     public function getClient()
     {
@@ -223,6 +225,19 @@ class Client
     public function setPassword($password)
     {
         $this->password = $password;
+
+        // We need to reinitialize the SOAP client.
+        $this->soap = null;
+    }
+
+    /**
+     * Sets the token property
+     *
+     * @param string $token
+     */
+    public function setToken($token)
+    {
+        $this->token = $token;
 
         // We need to reinitialize the SOAP client.
         $this->soap = null;
@@ -1600,15 +1615,14 @@ class Client
     /**
      * Initializes the SoapClient object to make a request
      *
-     * @return \jamesiarmes\PhpNtlm\SoapClient
+     * @return \jamesiarmes\PhpEws\OAuth\SoapClient
      */
     protected function initializeSoapClient()
     {
         $this->soap = new SoapClient(
             dirname(__FILE__) . '/assets/services.wsdl',
             array(
-                'user' => $this->username,
-                'password' => $this->password,
+                'token' => $this->token,
                 'location' => 'https://' . $this->server . '/EWS/Exchange.asmx',
                 'classmap' => $this->classMap(),
                 'curlopts' => $this->curl_options,
