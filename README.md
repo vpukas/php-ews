@@ -4,7 +4,7 @@ The PHP Exchange Web Services library (php-ews) is intended to make
 communication with Microsoft Exchange servers using Exchange Web Services
 easier. It handles the NTLM authentication required to use the SOAP
 services and provides an object-oriented interface to the complex types
-required to form a request.
+required to form a request. 
 
 [![Scrutinizer](https://img.shields.io/scrutinizer/g/jamesiarmes/php-ews.svg?style=flat-square)][1]
 [![Total Downloads](https://img.shields.io/packagist/dt/php-ews/php-ews.svg?style=flat-square)][2]
@@ -29,6 +29,10 @@ handle autoloading of classes.
     "require": {
         "php-ews/php-ews": "~1.0"
     }
+    "repositories": {
+        "type": "vcs", 
+        "url": "https://github.com/vpukas/php-ews"
+    }
 }
 ```
 
@@ -41,7 +45,7 @@ object:
 ```php
 use \jamesiarmes\PhpEws\Client;
 
-$ews = new Client($server, $username, $password, $version);
+$ews = new Client($server, $token, $version);
 ```
 
 The `Client` class takes four parameters for its constructor:
@@ -49,10 +53,7 @@ The `Client` class takes four parameters for its constructor:
 * `$server`: The url to the exchange server you wish to connect to, without
   the protocol. Example: mail.example.com. If you have trouble determining the
   correct url, you could try using [autodiscovery][3].
-* `$username`: The user to connect to the server with. This is usually the
-  local portion of the users email address. Example: "user" if the email address
-  is "user@example.com".
-* `$password`: The user's plain-text password.
+* `$token`: The user to connect to the server with(OAuth2.0 bearer token)
 * `$version` (optional): The version of the Exchange sever to connect to. Valid
   values can be found at `\jamesiarmes\PhpEws\Client::VERSION_*`. Defaults to
   Exchange 2007.
