@@ -6,6 +6,10 @@ easier. It handles the NTLM authentication required to use the SOAP
 services and provides an object-oriented interface to the complex types
 required to form a request. 
 
+The library was modified to be able to access Microsoft Exchange 
+servers using Oauth2.0 authentification instead of basic one 
+which is going to deprecated soon.
+
 [![Scrutinizer](https://img.shields.io/scrutinizer/g/jamesiarmes/php-ews.svg?style=flat-square)][1]
 [![Total Downloads](https://img.shields.io/packagist/dt/php-ews/php-ews.svg?style=flat-square)][2]
 
@@ -13,7 +17,9 @@ required to form a request.
 
 * Composer
 * PHP 5.4 or greater
-* cURL with NTLM support (7.30.0+ recommended)
+* cURL 
+* SOAP
+* guzzlehttp/guzzzle
 * Exchange 2007 or later
 
 **Note: Not all operations or request elements are supported on all versions of
@@ -48,7 +54,7 @@ use \jamesiarmes\PhpEws\Client;
 $ews = new Client($server, $token, $version);
 ```
 
-The `Client` class takes four parameters for its constructor:
+The `Client` class takes three parameters for its constructor:
 
 * `$server`: The url to the exchange server you wish to connect to, without
   the protocol. Example: mail.example.com. If you have trouble determining the
