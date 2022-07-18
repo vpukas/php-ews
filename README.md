@@ -59,7 +59,7 @@ The `Client` class takes three parameters for its constructor:
 * `$server`: The url to the exchange server you wish to connect to, without
   the protocol. Example: mail.example.com. If you have trouble determining the
   correct url, you could try using [autodiscovery][3].
-* `$token`: The user to connect to the server with(OAuth2.0 bearer token)
+* `$token`: The token to connect to the server with(OAuth2.0 bearer token)
 * `$version` (optional): The version of the Exchange sever to connect to. Valid
   values can be found at `\jamesiarmes\PhpEws\Client::VERSION_*`. Defaults to
   Exchange 2007.
